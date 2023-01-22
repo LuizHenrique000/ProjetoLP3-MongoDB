@@ -1,0 +1,7 @@
+version: '3.8'
+services:      
+    spring-generate-database-new:
+        container_name: mongoDB
+        image: mongo:4.4.6
+        ports:
+            - "27017:27017"
