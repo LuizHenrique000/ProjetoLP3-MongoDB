@@ -1,11 +1,12 @@
 package com.lp4.moviebook.controller;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,12 @@ public class UserController {
 		User response = service.findUserById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
+	
+	@GetMapping
+	private ResponseEntity<List<User>> findAll(){
+		List<User> response = service.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
 
 	@PostMapping
 	private ResponseEntity<User> createUser(@RequestBody User user) {
@@ -34,10 +41,23 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
-	@PutMapping("/{idUser}/{idMovie}")
-	private ResponseEntity<User> adicionarFilme(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
+	@PostMapping("/{idUser}/{idMovie}")
+	private ResponseEntity<User> adicionarFilmeNaListaDeAssistidos(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
 		User response = service.addMovieInWatchedList(idUser, idMovie);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
+	}
+	
+//	@PutMapping("/{idUser}/{idMovie}")
+//	private ResponseEntity<User> adicionarFilmeNaWatchList(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
+//		User response = service.addMovieInWatchList(idUser, idMovie);
+//		return ResponseEntity.status(HttpStatus.OK).body(response);
+//		
+//	}
+	
+	@DeleteMapping
+	private ResponseEntity<Void> deletarFilmePorIdDaWatchList(String id){
+		service.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 }

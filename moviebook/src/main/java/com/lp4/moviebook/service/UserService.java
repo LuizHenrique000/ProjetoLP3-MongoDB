@@ -1,10 +1,7 @@
 package com.lp4.moviebook.service;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.lp4.moviebook.model.Movie;
 import com.lp4.moviebook.model.User;
 import com.lp4.moviebook.repository.MovieRepository;
@@ -14,6 +11,7 @@ import com.lp4.moviebook.repository.UserRepository;
 public class UserService {
 
 	private UserRepository userRepository;
+	
 	private MovieRepository movieRepository;
 
 	public UserService(UserRepository userRepository, MovieRepository movieRepository) {
@@ -25,6 +23,10 @@ public class UserService {
 		return userRepository.findById(idUser).get();
 	}
 	
+	public List<User> findAll(){
+		return userRepository.findAll();
+	}
+	
 	public User createUser(User user) {
 		User entity = userRepository.save(user);
 		return entity;
@@ -33,10 +35,23 @@ public class UserService {
 	public User addMovieInWatchedList(String idUser, String idMovie) {
 		User userEntity = findUserById(idUser);
 		Movie movieEntity = findMovieById(idMovie);
-		List watchedMovies = new ArrayList<Movie>();
-		watchedMovies.add(movieEntity);
-		userEntity.setWatchedMovies(watchedMovies);
+		List userWatchedMovies = userEntity.getWatchedMovies();
+		userWatchedMovies.add(movieEntity);
+		userEntity.setWatchedMovies(userWatchedMovies);
 		return userRepository.save(userEntity);
+	}
+	
+	public User addMovieInWatchList(String idUser, String idMovie) {
+		User userEntity = findUserById(idUser);
+		Movie movieEntity = findMovieById(idMovie);
+		List watchListMovies = userEntity.getWatchedMovies();
+		watchListMovies.add(movieEntity);
+		userEntity.setWatchedMovies(watchListMovies);
+		return userRepository.save(userEntity);
+	}
+	
+	public void deleteById(String id) {
+		userRepository.deleteById(id);
 	}
 	
 	private Movie findMovieById(String idMovie) {

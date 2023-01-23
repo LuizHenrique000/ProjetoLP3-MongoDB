@@ -1,0 +1,10 @@
+tmdb-external-api: https://api.themoviedb.org/3
+server:
+  servlet:
+    context-path: /moviebook
+  port: '8081'
+tmdb-api-key: 96f9d761da098b39ca71e3484f860ff2
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost/moviebook-database
