@@ -35,7 +35,7 @@ public class UserService {
 	public User addMovieInWatchedList(String idUser, String idMovie) {
 		User userEntity = findUserById(idUser);
 		Movie movieEntity = findMovieById(idMovie);
-		List userWatchedMovies = userEntity.getWatchedMovies();
+		List<Movie> userWatchedMovies = userEntity.getWatchedMovies();
 		userWatchedMovies.add(movieEntity);
 		userEntity.setWatchedMovies(userWatchedMovies);
 		return userRepository.save(userEntity);
@@ -44,14 +44,18 @@ public class UserService {
 	public User addMovieInWatchList(String idUser, String idMovie) {
 		User userEntity = findUserById(idUser);
 		Movie movieEntity = findMovieById(idMovie);
-		List watchListMovies = userEntity.getWatchedMovies();
+		List<Movie> watchListMovies = userEntity.getWatchList();
 		watchListMovies.add(movieEntity);
-		userEntity.setWatchedMovies(watchListMovies);
+		userEntity.setWatchList(watchListMovies);
 		return userRepository.save(userEntity);
 	}
 	
-	public void deleteById(String id) {
-		userRepository.deleteById(id);
+	public void deleteMovieInWatchListUserById(String idMovie, String idUser) {
+		User userEntity = findUserById(idUser);
+		List<Movie> userWatchListMovies = userEntity.getWatchList();
+		userWatchListMovies.remove(idMovie);
+		userEntity.setWatchList(userWatchListMovies);
+		userRepository.save(userEntity);
 	}
 	
 	private Movie findMovieById(String idMovie) {

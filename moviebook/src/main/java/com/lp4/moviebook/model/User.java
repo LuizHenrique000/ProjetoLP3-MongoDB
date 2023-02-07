@@ -2,6 +2,7 @@ package com.lp4.moviebook.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
@@ -15,10 +16,13 @@ import lombok.NoArgsConstructor;
 public class User {
 
 	@Id
+	@NotNull(message = "{id.not.null}")
 	private String id;
 	
+	@NotNull(message = "{name.not.null}")
 	private String name;
 	
+	@NotNull(message = "{age.not.null}")
 	private int age;
 	
 	private List<Movie> watchedMovies = new ArrayList<>();

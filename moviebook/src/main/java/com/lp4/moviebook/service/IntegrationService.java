@@ -1,7 +1,5 @@
 package com.lp4.moviebook.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
@@ -31,10 +29,6 @@ public class IntegrationService {
 		Movie movie = this.restTemplate.getForObject(url, Movie.class);
 		Movie moviePersistido = movieRepository.save(movie);
 		return moviePersistido;
-	}
-	
-	public List<Movie> findAll() {
-		return movieRepository.findAll();
 	}
 
 	private String generateURLIntegration(int id) {
