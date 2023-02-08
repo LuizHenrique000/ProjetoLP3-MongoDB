@@ -22,5 +22,7 @@ public class Log {
 	private Operation operation;
 	
 	private User user; 
+	
+	private Movie movie;
 
 }

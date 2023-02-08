@@ -1,12 +1,14 @@
 package com.lp4.moviebook.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.lp4.moviebook.model.Movie;
 import com.lp4.moviebook.repository.MovieRepository;
 
+@ConfigurationProperties(prefix = "tmdb-external-api")
 @Service
 public class IntegrationService {
 

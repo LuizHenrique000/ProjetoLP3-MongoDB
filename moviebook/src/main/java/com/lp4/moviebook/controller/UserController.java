@@ -61,10 +61,10 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{idUser}/movies/{idMovie}/watch-list")
-	private BodyBuilder deletarFilmePorIdDaWatchList(String idMovie, String idUser){
-		service.deleteMovieInWatchListUserById(idMovie, idUser);
-		logService.generateDeleteLogOfUser(idUser);
-		return ResponseEntity.status(HttpStatus.ACCEPTED);
+	private ResponseEntity<Void> deletarFilmePorIdDaWatchList(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie){
+		service.deleteMovieInWatchListUserById(idUser, idMovie);
+		logService.generateDeleteLogOfUser(idUser, idMovie);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		
 	}
 }
