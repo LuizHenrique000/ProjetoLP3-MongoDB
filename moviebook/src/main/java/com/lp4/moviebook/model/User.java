@@ -23,7 +23,7 @@ public class User {
 	private String name;
 	
 	@NotNull(message = "{age.not.null}")
-	private int age;
+	private String age;
 	
 	private List<Movie> watchedMovies = new ArrayList<>();
 	

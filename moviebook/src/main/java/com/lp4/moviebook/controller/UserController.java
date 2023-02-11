@@ -37,11 +37,11 @@ public class UserController {
 	
 	@GetMapping
 	private ResponseEntity<List<User>> findAll(){
-		List<User> response = service.findAll();
+		List<User> response = service.findAllUsers();
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
-	@PostMapping()
+	@PostMapping
 	private ResponseEntity<User> createUser(@RequestBody User user) {
 		User response = service.createUser(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -49,21 +49,21 @@ public class UserController {
 	
 	@PostMapping("/{idUser}/movie/{idMovie}")
 	private ResponseEntity<User> adicionarFilmeNaListaDeAssistidos(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
-		User response = service.addMovieInWatchedList(idUser, idMovie);
+		User response = service.addMovieToWatchedList(idUser, idMovie);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}
 	
 	@PostMapping("/user/{idUser}/movie/{idMovie}")
 	private ResponseEntity<User> adicionarFilmeNaWatchList(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
-		User response = service.addMovieInWatchList(idUser, idMovie);
+		User response = service.addMovieToWatchList(idUser, idMovie);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}
 	
 	@DeleteMapping("/{idUser}/movies/{idMovie}/watch-list")
-	private ResponseEntity<Void> deletarFilmePorIdDaWatchList(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie){
-		service.deleteMovieInWatchListUserById(idUser, idMovie);
+	private ResponseEntity<Void> deletarFilmePorIdDaWatchList(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
+		service.removeMovieFromWatchList(idUser, idMovie);
 		logService.generateDeleteLogOfUser(idUser, idMovie);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		
