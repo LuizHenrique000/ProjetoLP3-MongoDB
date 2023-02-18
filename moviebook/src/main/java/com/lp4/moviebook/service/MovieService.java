@@ -1,10 +1,11 @@
 package com.lp4.moviebook.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
+import com.lp4.moviebook.dto.ResponseMovieDTO;
+import com.lp4.moviebook.exception.NotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.lp4.moviebook.model.Movie;
 import com.lp4.moviebook.repository.MovieRepository;
@@ -13,18 +14,23 @@ import com.lp4.moviebook.repository.MovieRepository;
 public class MovieService {
 	
 	private MovieRepository repository;
+	private IntegrationService integrationService;
 	
-	public MovieService(MovieRepository repository) {
+	public MovieService(MovieRepository repository, IntegrationService integrationService) {
 		this.repository = repository;
+		this.integrationService = integrationService;
 	}
 	
 	public List<Movie> findAll() {
 		return repository.findAll();
 	}
-	
-	public Movie findById(String id) {
-		return repository.findById(id).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie doenst exist"));
+
+	public ResponseMovieDTO findById(String id) {
+		Optional<Movie> movie = repository.findById(id);
+		if (movie.isPresent()) {
+			return integrationService.findById(Integer.parseInt(movie.get().getNumberReference()));
+		}
+		return integrationService.findById(Integer.parseInt(id));
 	}
 
 }

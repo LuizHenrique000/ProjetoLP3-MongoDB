@@ -1,6 +1,8 @@
 package com.lp4.moviebook.model;
 
 import java.time.LocalDateTime;
+
+import com.lp4.moviebook.dto.ResponseMovieDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.lp4.moviebook.enums.Operation;
@@ -21,8 +23,8 @@ public class Log {
 	
 	private Operation operation;
 	
-	private User user; 
+	private String user;
 	
-	private Movie movie;
+	private String movie;
 
 }

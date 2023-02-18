@@ -2,6 +2,7 @@ package com.lp4.moviebook.controller;
 
 import java.util.List;
 
+import com.lp4.moviebook.dto.ResponseMovieDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,17 +20,15 @@ import com.lp4.moviebook.service.MovieService;
 @CrossOrigin(origins = "*")
 public class MovieController {
 
-    private IntegrationService integrationService;
     private MovieService movieService;
     
-    public MovieController(IntegrationService integrationService, MovieService movieService) {
-		this.integrationService = integrationService;
+    public MovieController(MovieService movieService) {
 		this.movieService = movieService;
 	}
 
 	@GetMapping("/{id}")
-    public ResponseEntity<Movie> findById(@PathVariable("id") int id) {
-        Movie response = integrationService.findById(id);
+    public ResponseEntity<ResponseMovieDTO> findById(@PathVariable("id") String id) {
+        ResponseMovieDTO response = movieService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     

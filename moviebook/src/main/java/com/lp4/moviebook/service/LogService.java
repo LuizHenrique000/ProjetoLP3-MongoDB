@@ -1,6 +1,8 @@
 package com.lp4.moviebook.service;
 
 import java.time.LocalDateTime;
+
+import com.lp4.moviebook.dto.ResponseMovieDTO;
 import org.springframework.stereotype.Service;
 import com.lp4.moviebook.enums.Operation;
 import com.lp4.moviebook.model.Log;
@@ -21,26 +23,17 @@ public class LogService {
 		this.logRepository = logRepository;
 		this.userService = userService;
 		this.movieService = movieService;
-		
 	}
 
 	public void generateDeleteLogOfUser(String idUser, String idMovie) {
-		User userEntity = getUser(idUser);
-		Movie movieEntity = getMovie(idMovie);
+		User userEntity = userService.findUserById(idUser);
+		ResponseMovieDTO movieEntity = movieService.findById(idMovie);
 		Log log = new Log();
 		log.setDate(LocalDateTime.now());
 		log.setOperation(Operation.DELETE);
-		log.setUser(userEntity);
-		log.setMovie(movieEntity);
+		log.setUser(userEntity.getName());
+		log.setMovie(movieEntity.title());
 		logRepository.save(log);
-	}
-	
-	private User getUser(String idUser) {
-		return userService.findUserById(idUser);
-	}
-	
-	private Movie getMovie(String idMovie) {
-		return movieService.findById(idMovie);
 	}
 	
 }

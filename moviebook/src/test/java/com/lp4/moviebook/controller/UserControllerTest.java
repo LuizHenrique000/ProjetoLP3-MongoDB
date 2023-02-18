@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import com.lp4.moviebook.dto.ResponseMovieDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,8 +38,8 @@ public class UserControllerTest {
 	
 	@Test
 	public void shouldReturnSuccessWhenPostingAUser() {
-		List<Movie> watchList = List.of();
-		List<Movie> watchedList = List.of();
+		List<ResponseMovieDTO> watchList = List.of();
+		List<ResponseMovieDTO> watchedList = List.of();
 		User user = new User("1", "Luiz", "18", watchedList, watchList);
 		when(this.userService.createUser(user)).thenReturn(user);
 		
@@ -46,7 +47,7 @@ public class UserControllerTest {
 			.contentType("application/json")
 			.body(user)
 		.when()
-			.post("api/v1/users");
+			.post("api/v1/users/user");
 		
 		assertEquals(HttpStatus.CREATED.value(), response.getStatusCode());
 		assertEquals("1", response.path("id"));

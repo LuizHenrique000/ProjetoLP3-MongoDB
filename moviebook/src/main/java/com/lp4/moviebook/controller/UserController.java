@@ -2,6 +2,7 @@ package com.lp4.moviebook.controller;
 
 import java.util.List;
 
+import com.lp4.moviebook.dto.RequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,22 +42,22 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
-	@PostMapping
+	@PostMapping("/user")
 	private ResponseEntity<User> createUser(@RequestBody User user) {
 		User response = service.createUser(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	
-	@PostMapping("/{idUser}/movie/{idMovie}")
-	private ResponseEntity<User> adicionarFilmeNaListaDeAssistidos(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
-		User response = service.addMovieToWatchedList(idUser, idMovie);
+	@PostMapping("/user/movie")
+	private ResponseEntity<User> adicionarFilmeNaListaDeAssistidos(@RequestBody RequestDTO requestDTO) {
+		User response = service.addMovieToWatchedList(requestDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}
 	
-	@PostMapping("/user/{idUser}/movie/{idMovie}")
-	private ResponseEntity<User> adicionarFilmeNaWatchList(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
-		User response = service.addMovieToWatchList(idUser, idMovie);
+	@PostMapping("/user/movie/watch-list")
+	private ResponseEntity<User> adicionarFilmeNaWatchList(@RequestBody RequestDTO requestDTO) {
+		User response = service.addMovieToWatchList(requestDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}

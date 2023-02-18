@@ -1,5 +1,7 @@
 package com.lp4.moviebook.service;
 
+import com.lp4.moviebook.component.RestTemplateResponseErrorHandler;
+import com.lp4.moviebook.dto.ResponseMovieDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,7 +15,6 @@ import com.lp4.moviebook.repository.MovieRepository;
 public class IntegrationService {
 
 	private RestTemplate restTemplate;
-	private MovieRepository movieRepository;
 
 	@Value("${tmdb-external-api}")
 	private String uri;
@@ -22,15 +23,14 @@ public class IntegrationService {
 	private String apiKey;
 
 	public IntegrationService(RestTemplateBuilder restTemplateBuilder, MovieRepository movieRepository) {
-		this.restTemplate = restTemplateBuilder.build();
-		this.movieRepository = movieRepository;
+		this.restTemplate = restTemplateBuilder
+				.errorHandler(new RestTemplateResponseErrorHandler())
+				.build();
 	}
 
-	public Movie findById(int id) {
+	public ResponseMovieDTO findById(int id) {
 		String url = generateURLIntegration(id);
-		Movie movie = this.restTemplate.getForObject(url, Movie.class);
-		Movie moviePersistido = movieRepository.save(movie);
-		return moviePersistido;
+		return this.restTemplate.getForObject(url, ResponseMovieDTO.class);
 	}
 
 	private String generateURLIntegration(int id) {

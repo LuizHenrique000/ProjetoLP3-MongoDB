@@ -3,6 +3,9 @@ package com.lp4.moviebook.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.lp4.moviebook.dto.RequestDTO;
+import com.lp4.moviebook.dto.ResponseMovieDTO;
+import com.lp4.moviebook.exception.AlreadyExistsException;
 import org.springframework.stereotype.Service;
 
 import com.lp4.moviebook.exception.NotFoundException;
@@ -15,16 +18,17 @@ import com.lp4.moviebook.repository.UserRepository;
 public class UserService {
 
 	private UserRepository userRepository;
-	private MovieRepository movieRepository;
 
-	public UserService(UserRepository userRepository, MovieRepository movieRepository) {
+	private MovieService movieService;
+
+	public UserService(UserRepository userRepository, MovieService movieService) {
 		this.userRepository = userRepository;
-		this.movieRepository = movieRepository;
+		this.movieService = movieService;
 	}
 
 	public User findUserById(String id) {
 		Optional<User> user = userRepository.findById(id);
-		if (!user.isPresent()) {
+		if (user.isEmpty()) {
 			throw new NotFoundException("User not found with id: " + id);
 		}
 		return user.get();
@@ -35,38 +39,43 @@ public class UserService {
 	}
 
 	public User createUser(User user) {
+		if (userRepository.existsById(user.getId())) {
+			throw new AlreadyExistsException("User already exists with id: " + user.getId());
+		}
 		return userRepository.save(user);
 	}
 
-	public User addMovieToWatchedList(String userId, String movieId) {
-		User user = findUserById(userId);
-		Movie movie = findMovieById(movieId);
-		user.getWatchedMovies().add(movie);
+	public User addMovieToWatchedList(RequestDTO requestDTO) {
+		User user = findUserById(requestDTO.idUser());
+		List<ResponseMovieDTO> watchedMovies = addMovieToList(requestDTO, findUserById(requestDTO.idUser()).getWatchedMovies());
+		user.setWatchedMovies(watchedMovies);
 		return userRepository.save(user);
 	}
 
-	public User addMovieToWatchList(String userId, String movieId) {
-		User user = findUserById(userId);
-		Movie movie = findMovieById(movieId);
-		user.getWatchList().add(movie);
+	public User addMovieToWatchList(RequestDTO requestDTO) {
+		User user = findUserById(requestDTO.idUser());
+		List<ResponseMovieDTO> watchList = addMovieToList(requestDTO, findUserById(requestDTO.idUser()).getWatchList());
+		user.setWatchList(watchList);
 		return userRepository.save(user);
 	}
 
-	public User removeMovieFromWatchList(String userId, String movieId) {
+	public void removeMovieFromWatchList(String userId, String movieId) {
 		User user = findUserById(userId);
-		Movie movie = findMovieById(movieId);
+		ResponseMovieDTO movie = movieService.findById(movieId);
 		if (!user.getWatchList().contains(movie)) {
 			throw new NotFoundException("Movie not found in user's watch list");
 		}
 		user.getWatchList().remove(movie);
-		return userRepository.save(user);
+		userRepository.save(user);
 	}
 
-	private Movie findMovieById(String id) {
-		Optional<Movie> movie = movieRepository.findById(id);
-		if (!movie.isPresent()) {
-			throw new NotFoundException("Movie not found with id: " + id);
+	private List<ResponseMovieDTO> addMovieToList(RequestDTO requestDTO, List<ResponseMovieDTO> movieList) {
+		ResponseMovieDTO movie = movieService.findById(requestDTO.idMovie());
+		if (!movieList.contains(movie)) {
+			movieList.add(movie);
+		} else {
+			throw new AlreadyExistsException("Movie already exists in user's list");
 		}
-		return movie.get();
+		return movieList;
 	}
 }
