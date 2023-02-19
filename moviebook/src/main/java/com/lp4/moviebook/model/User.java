@@ -2,6 +2,7 @@ package com.lp4.moviebook.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.lp4.moviebook.dto.ResponseMovieDTO;
@@ -18,13 +19,13 @@ import lombok.NoArgsConstructor;
 public class User {
 
 	@Id
-	@NotNull(message = "{id.not.null}")
+	@NotBlank(message = "The id must not be empty")
 	private String id;
 	
-	@NotNull(message = "{name.not.null}")
+	@NotBlank(message = "The name must not be empty")
 	private String name;
 	
-	@NotNull(message = "{age.not.null}")
+	@NotBlank(message = "The age must not be empty")
 	private String age;
 	
 	private List<ResponseMovieDTO> watchedMovies = new ArrayList<>();

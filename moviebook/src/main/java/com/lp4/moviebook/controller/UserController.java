@@ -17,6 +17,8 @@ import com.lp4.moviebook.model.User;
 import com.lp4.moviebook.service.LogService;
 import com.lp4.moviebook.service.UserService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/users")
 public class UserController {
@@ -43,20 +45,20 @@ public class UserController {
 	}
 
 	@PostMapping("/user")
-	private ResponseEntity<User> createUser(@RequestBody User user) {
+	private ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		User response = service.createUser(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	
 	@PostMapping("/user/movie")
-	private ResponseEntity<User> adicionarFilmeNaListaDeAssistidos(@RequestBody RequestDTO requestDTO) {
+	private ResponseEntity<User> adicionarFilmeNaListaDeAssistidos(@Valid @RequestBody RequestDTO requestDTO) {
 		User response = service.addMovieToWatchedList(requestDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}
 	
 	@PostMapping("/user/movie/watch-list")
-	private ResponseEntity<User> adicionarFilmeNaWatchList(@RequestBody RequestDTO requestDTO) {
+	private ResponseEntity<User> adicionarFilmeNaWatchList(@Valid @RequestBody RequestDTO requestDTO) {
 		User response = service.addMovieToWatchList(requestDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
