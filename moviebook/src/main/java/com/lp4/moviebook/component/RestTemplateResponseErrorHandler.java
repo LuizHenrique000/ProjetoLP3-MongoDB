@@ -27,8 +27,8 @@ public class RestTemplateResponseErrorHandler
     @Override
     public void handleError(ClientHttpResponse httpResponse)
             throws IOException {
-            if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new NotFoundException("Movie not exists in TMDB API");
-            }
+        if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new NotFoundException("Movie not exists in TMDB API");
+        }
     }
 }

@@ -28,11 +28,12 @@ public class LogService {
 	public void generateDeleteLogOfUser(String idUser, String idMovie) {
 		User userEntity = userService.findUserById(idUser);
 		ResponseMovieDTO movieEntity = movieService.findById(idMovie);
-		Log log = new Log();
-		log.setDate(LocalDateTime.now());
-		log.setOperation(Operation.DELETE);
-		log.setUser(userEntity.getName());
-		log.setMovie(movieEntity.title());
+		Log log = Log.builder()
+				.date(LocalDateTime.now())
+				.operation(Operation.DELETE)
+				.user(userEntity.getName())
+				.movie(movieEntity.title())
+				.build();
 		logRepository.save(log);
 	}
 	

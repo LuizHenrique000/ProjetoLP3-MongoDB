@@ -51,21 +51,21 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/movie")
-	private ResponseEntity<User> adicionarFilmeNaListaDeAssistidos(@Valid @RequestBody RequestDTO requestDTO) {
+	private ResponseEntity<User> addMovieToWatchedList(@Valid @RequestBody RequestDTO requestDTO) {
 		User response = service.addMovieToWatchedList(requestDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}
 	
 	@PostMapping("/user/movie/watch-list")
-	private ResponseEntity<User> adicionarFilmeNaWatchList(@Valid @RequestBody RequestDTO requestDTO) {
+	private ResponseEntity<User> addMovieToWatchList(@Valid @RequestBody RequestDTO requestDTO) {
 		User response = service.addMovieToWatchList(requestDTO);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}
 	
 	@DeleteMapping("/{idUser}/movies/{idMovie}/watch-list")
-	private ResponseEntity<Void> deletarFilmePorIdDaWatchList(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
+	private ResponseEntity<Void> deleteMovieFromWatchListById(@PathVariable("idUser") String idUser, @PathVariable("idMovie") String idMovie) {
 		service.removeMovieFromWatchList(idUser, idMovie);
 		logService.generateDeleteLogOfUser(idUser, idMovie);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();

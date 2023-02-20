@@ -22,7 +22,7 @@ public class IntegrationService {
 	@Value("${tmdb-api-key}")
 	private String apiKey;
 
-	public IntegrationService(RestTemplateBuilder restTemplateBuilder, MovieRepository movieRepository) {
+	public IntegrationService(RestTemplateBuilder restTemplateBuilder) {
 		this.restTemplate = restTemplateBuilder
 				.errorHandler(new RestTemplateResponseErrorHandler())
 				.build();
