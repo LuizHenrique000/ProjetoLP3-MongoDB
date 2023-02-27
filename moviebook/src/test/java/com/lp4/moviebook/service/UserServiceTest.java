@@ -31,7 +31,6 @@ public class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @BeforeAll
     public User createUserForTest(){
         List<ResponseMovieDTO> watchList = new ArrayList<>();
         List<ResponseMovieDTO> watchedList = new ArrayList<>();
